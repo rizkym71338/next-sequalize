@@ -1,19 +1,18 @@
 import models from "../../../../db/models/index";
 
-const Create = async (req, res) => {
-  const { rolename } = req.body;
-
-  if (req.method == "POST") {
+const Role = async (req, res) => {
+  if (req.method == "GET") {
     try {
-      await models.roles.create({
-        rolename,
+      const roles = await models.roles.findAll({
+        attributes: ["uuid", "rolename"],
       });
       res.status(200).json({
-        msg: "role created",
+        msg: "role founded",
+        roles,
       });
     } catch (err) {
       res.status(500).json({
-        message: err.message,
+        msg: err.message,
       });
     }
   } else {
@@ -23,4 +22,4 @@ const Create = async (req, res) => {
   }
 };
 
-export default Create;
+export default Role;
