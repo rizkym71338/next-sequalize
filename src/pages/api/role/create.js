@@ -5,12 +5,28 @@ const Create = async (req, res) => {
 
   if (req.method == "POST") {
     try {
-      await models.roles.create({
-        rolename,
+      const role = await models.roles.findOne({
+        where: {
+          rolename,
+        },
       });
-      res.status(200).json({
-        msg: "role created",
-      });
+
+      const createRole = async () => {
+        await models.roles.create({
+          rolename,
+        });
+        res.status(200).json({
+          msg: "role created",
+        });
+      };
+
+      const roleExists = async () => {
+        res.status(400).json({
+          msg: "role already exists",
+        });
+      };
+
+      role ? roleExists() : createRole();
     } catch (err) {
       res.status(500).json({
         message: err.message,

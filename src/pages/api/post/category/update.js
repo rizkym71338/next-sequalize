@@ -1,18 +1,24 @@
 import models from "../../../../../db/models/index";
 
-const Delete = async (req, res) => {
+const Update = async (req, res) => {
   const { uuid } = req.query;
+  const { name } = req.body;
 
-  if (req.method == "DELETE") {
+  if (req.method == "PUT") {
     try {
       const category = await models.postCategories.findOne({
-        where: { uuid },
+        where: {
+          uuid,
+        },
       });
 
       const match = async () => {
-        await category.destroy();
+        await category.update({
+          name,
+        });
+        await category.save();
         res.status(200).json({
-          msg: "category deleted",
+          msg: "category updated",
         });
       };
 
@@ -35,4 +41,4 @@ const Delete = async (req, res) => {
   }
 };
 
-export default Delete;
+export default Update;

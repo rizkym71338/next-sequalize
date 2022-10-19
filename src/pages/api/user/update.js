@@ -2,33 +2,44 @@ import models from "../../../../db/models/index";
 
 const Update = async (req, res) => {
   const { uuid } = req.query;
-  const { rolename } = req.body;
+  const { username, password, roleId } = req.body;
 
   if (req.method == "PUT") {
     try {
-      const role = await models.roles.findOne({
+      let role = {};
+      if (roleId) {
+        role = await models.roles.findOne({
+          where: {
+            uuid: roleId,
+          },
+        });
+      }
+
+      const user = await models.users.findOne({
         where: {
           uuid,
         },
       });
 
       const match = async () => {
-        await role.update({
-          rolename: rolename ?? role.rolename,
+        await user.update({
+          username: username ?? user.username,
+          password: password ?? user.password,
+          roleId: role.id ?? user.roleId,
         });
-        await role.save();
+        await user.save();
         res.status(200).json({
-          msg: "role updated",
+          msg: "user updated",
         });
       };
 
       const notMatch = async () => {
         res.status(404).json({
-          msg: `role with uuid ${uuid} not found`,
+          msg: `user with uuid ${uuid} not found`,
         });
       };
 
-      role ? match() : notMatch();
+      user ? match() : notMatch();
     } catch (err) {
       res.status(500).json({
         msg: err.message,

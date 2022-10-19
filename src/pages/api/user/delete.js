@@ -1,31 +1,33 @@
-import models from "../../../../../db/models/index";
+import models from "../../../../db/models/index";
 
 const Delete = async (req, res) => {
   const { uuid } = req.query;
 
   if (req.method == "DELETE") {
     try {
-      const category = await models.postCategories.findOne({
-        where: { uuid },
+      const user = await models.users.findOne({
+        where: {
+          uuid,
+        },
       });
 
       const match = async () => {
-        await category.destroy();
+        await user.destroy();
         res.status(200).json({
-          msg: "category deleted",
+          msg: "user deleted",
         });
       };
 
       const notMatch = async () => {
         res.status(404).json({
-          msg: `category with uuid ${uuid} not found`,
+          msg: `user with uuid ${uuid} not found`,
         });
       };
 
-      category ? match() : notMatch();
+      user ? match() : notMatch();
     } catch (err) {
       res.status(500).json({
-        msg: err.message,
+        message: err.message,
       });
     }
   } else {
