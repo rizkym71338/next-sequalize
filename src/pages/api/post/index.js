@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import models from "../../../../db/models/index";
 
 const Post = async (req, res) => {
@@ -10,6 +11,14 @@ const Post = async (req, res) => {
             model: models.postCategories,
             as: "categories",
             attributes: ["uuid", "name"],
+            through: {
+              attributes: [],
+            },
+            where: {
+              name: {
+                [Op.like]: "%blockchain%",
+              },
+            },
           },
         ],
       });

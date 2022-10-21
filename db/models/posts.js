@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "postId",
         as: "categories",
         timestamps: false,
-        onDelete: "NO ACTION",
+        onDelete: "DELETE",
       });
     }
   }

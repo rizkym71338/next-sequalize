@@ -15,6 +15,9 @@ const Read = async (req, res) => {
             model: models.postCategories,
             as: "categories",
             attributes: ["uuid", "name"],
+            through: {
+              attributes: [],
+            },
           },
         ],
       });

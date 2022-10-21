@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "categoryId",
         as: "posts",
         timestamps: false,
-        onDelete: "NO ACTION",
+        onDelete: "DELETE",
       });
     }
     // Hide original Id

@@ -10,6 +10,26 @@ const Read = async (req, res) => {
           uuid,
         },
         attributes: ["uuid", "name"],
+        include: [
+          {
+            model: models.posts,
+            as: "posts",
+            attributes: ["uuid", "title", "body"],
+            through: {
+              attributes: [],
+            },
+            include: [
+              {
+                model: models.postCategories,
+                as: "categories",
+                attributes: ["uuid", "name"],
+                through: {
+                  attributes: [],
+                },
+              },
+            ],
+          },
+        ],
       });
 
       const match = async () => {

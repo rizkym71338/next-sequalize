@@ -7,9 +7,16 @@ const Delete = async (req, res) => {
     try {
       const category = await models.postCategories.findOne({
         where: { uuid },
+        include: [
+          {
+            model: models.posts,
+            as: "posts",
+          },
+        ],
       });
 
       const match = async () => {
+        await category.posts.remove();
         await category.destroy();
         res.status(200).json({
           msg: "category deleted",
